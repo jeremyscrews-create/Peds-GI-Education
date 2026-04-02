@@ -224,6 +224,10 @@ body.article-open .cards-section { display: none; }
 .card[data-color="mint"] .card-banner { background: linear-gradient(135deg, var(--mint-light), #F0FDF4); }
 .card[data-color="mint"] .card-tag { background: var(--mint-light); color: #16A34A; }
 
+.card[data-color="peach"] { border-color: #FFE4D6; }
+.card[data-color="peach"] .card-banner { background: linear-gradient(135deg, #FFE4D6, #FFF5EE); }
+.card[data-color="peach"] .card-tag { background: #FFE4D6; color: #E8723A; }
+
 /* Product visual aids */
 .product-row {
   display: flex; gap: 1rem; flex-wrap: wrap;
@@ -363,6 +367,93 @@ body.article-open .article-view { display: block; }
 .callout.warning { background: var(--sun-light); border-color: var(--sun); }
 .callout.info { background: var(--sky-light); border-color: var(--sky); }
 .callout.important { background: var(--coral-light); border-color: var(--coral); }
+
+/* Decision tree toggle */
+/* Category tabs */
+.category-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.category-tab {
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  border: 2px solid #E5E7EB;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-light);
+  transition: all 0.25s ease;
+}
+.category-tab:hover {
+  border-color: var(--lavender);
+  color: var(--lavender);
+}
+.category-tab.active {
+  background: var(--text);
+  border-color: var(--text);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.category-tab .tab-icon {
+  margin-right: 0.35rem;
+}
+.card.hidden-card {
+  display: none;
+}
+
+/* Decision tree toggle */
+.feed-toggle {
+  display: flex; gap: 0.75rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+.feed-btn {
+  flex: 1; min-width: 140px;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  border: 3px solid #E5E7EB;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+.feed-btn:hover {
+  border-color: var(--lavender);
+  background: var(--lavender-light);
+}
+.feed-btn.active-bf {
+  border-color: var(--lavender);
+  background: var(--lavender-light);
+  color: #7C3AED;
+  box-shadow: 0 4px 16px rgba(167,139,250,0.2);
+}
+.feed-btn.active-ff {
+  border-color: var(--blue);
+  background: var(--blue-light);
+  color: #3B82F6;
+  box-shadow: 0 4px 16px rgba(96,165,250,0.2);
+}
+.feed-btn .feed-icon {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+.feed-section {
+  display: none;
+  animation: fadeUp 0.4s ease;
+}
+.feed-section.visible {
+  display: block;
+}
 .callout-title {
   font-family: 'Baloo 2', cursive;
   font-weight: 700; font-size: 1rem;
@@ -477,9 +568,15 @@ body.article-open .article-view { display: block; }
 
 <!-- CARD GRID -->
 <section class="cards-section">
+  <div class="category-tabs">
+    <button class="category-tab" onclick="filterCards('all', this)"><span class="tab-icon">📋</span>All Topics</button>
+    <button class="category-tab" onclick="filterCards('constipation', this)"><span class="tab-icon">🚽</span>Constipation</button>
+    <button class="category-tab" onclick="filterCards('milk', this)"><span class="tab-icon">🍼</span>Milk &amp; Dairy</button>
+    <button class="category-tab" onclick="filterCards('supplements', this)"><span class="tab-icon">🦠</span>Supplements</button>
+  </div>
   <div class="cards-grid">
 
-    <div class="card" data-color="coral" onclick="showArticle('constipation')">
+    <div class="card" data-color="coral" data-category="constipation" onclick="showArticle('constipation')">
       <div class="card-banner">🚽</div>
       <div class="card-body">
         <h3>Constipation &amp; Encopresis</h3>
@@ -488,7 +585,7 @@ body.article-open .article-view { display: block; }
       </div>
     </div>
 
-    <div class="card" data-color="sky" onclick="showArticle('probiotics')">
+    <div class="card" data-color="sky" data-category="supplements" onclick="showArticle('probiotics')">
       <div class="card-banner">🦠</div>
       <div class="card-body">
         <h3>Probiotics Guide</h3>
@@ -497,25 +594,25 @@ body.article-open .article-view { display: block; }
       </div>
     </div>
 
-    <div class="card" data-color="lavender" onclick="showArticle('cmpa-breastfed')">
+    <div class="card" data-color="lavender" data-category="milk" onclick="showArticle('cmpa')">
       <div class="card-banner">🍼</div>
       <div class="card-body">
-        <h3>Milk Protein Reintroduction (Breastfed)</h3>
-        <p>A step-by-step guide to reintroducing cow's milk and soy through your diet while breastfeeding.</p>
-        <span class="card-tag">Food Allergy</span>
+        <h3>Milk Protein Intolerance in Infants</h3>
+        <p>Understanding your baby's condition and a step-by-step guide to reintroducing dairy.</p>
+        <span class="card-tag">Food Intolerance</span>
       </div>
     </div>
 
-    <div class="card" data-color="blue" onclick="showArticle('cmpa-formula')">
-      <div class="card-banner">🧀</div>
+    <div class="card" data-color="peach" data-category="milk" onclick="showArticle('lactose-intolerance')">
+      <div class="card-banner">🥛</div>
       <div class="card-body">
-        <h3>Milk Protein Reintroduction (Formula-Fed)</h3>
-        <p>Timeline and steps for reintroducing dairy for formula-fed infants with cow's milk protein sensitivity.</p>
-        <span class="card-tag">Food Allergy</span>
+        <h3>Lactose Intolerance</h3>
+        <p>What lactose intolerance is, how it differs from milk protein problems, and how to manage it.</p>
+        <span class="card-tag">Digestive Health</span>
       </div>
     </div>
 
-    <div class="card" data-color="mint" onclick="showArticle('cleanout-under5')">
+    <div class="card" data-color="mint" data-category="constipation" onclick="showArticle('cleanout-under5')">
       <div class="card-banner">🧹</div>
       <div class="card-body">
         <h3>Clean Out: Under 5 Years</h3>
@@ -524,7 +621,7 @@ body.article-open .article-view { display: block; }
       </div>
     </div>
 
-    <div class="card" data-color="mint" onclick="showArticle('cleanout-5to12')">
+    <div class="card" data-color="mint" data-category="constipation" onclick="showArticle('cleanout-5to12')">
       <div class="card-banner">🧹</div>
       <div class="card-body">
         <h3>Clean Out: Ages 5–12</h3>
@@ -533,7 +630,7 @@ body.article-open .article-view { display: block; }
       </div>
     </div>
 
-    <div class="card" data-color="mint" onclick="showArticle('cleanout-over12')">
+    <div class="card" data-color="mint" data-category="constipation" onclick="showArticle('cleanout-over12')">
       <div class="card-banner">🧹</div>
       <div class="card-body">
         <h3>Clean Out: Over 12 Years</h3>
@@ -694,142 +791,125 @@ probiotics: {
   `
 },
 
-"cmpa-breastfed": {
+"cmpa": {
   icon: "🍼",
-  title: "Milk Protein Reintroduction",
-  subtitle: "Guide for Breastfed Infants",
+  title: "Milk Protein Intolerance in Infants",
+  subtitle: "Understanding Your Baby's Condition & Reintroduction Guide",
   color: "lavender",
   html: `
-    <p>Most infants will tolerate cow's milk and soy back in their diet within the first year. <strong>About 50% will tolerate milk by 6 months</strong> and <strong>95% by 9 months</strong>.</p>
-
-    <h2>Reintroduction Through Mom's Diet</h2>
-    <p>If your baby is doing well at 6 months, begin adding foods back to <em>your</em> diet in this order, about 2 weeks apart:</p>
-
-    <div class="step-box">
-      <span class="step-number">1</span>
-      <h4>Baked Soy</h4>
-      <p>Foods where soy is a minor ingredient, baked into the product.</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">2</span>
-      <h4>Baked Milk</h4>
-      <p>Foods like muffins or cake where milk is not a main ingredient (baked in).</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">3</span>
-      <h4>Fermented Milk</h4>
-      <p>Yogurt and cheese added to your diet.</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">4</span>
-      <h4>Liquid Milk</h4>
-      <p>Regular cow's milk added to your diet.</p>
-    </div>
-
-    <h2>Starting Solid Foods</h2>
-    <ul>
-      <li>Start pureed fruits and vegetables at <strong>4 months</strong> (if supplementing with formula) or <strong>6 months</strong> (if exclusively breastfed).</li>
-      <li>Baby should be sitting up with good head and neck control.</li>
-      <li>Introduce <strong>1 new food per week</strong>, watching for reactions.</li>
-      <li>Add <strong>meats after fruits and vegetables</strong>.</li>
-    </ul>
-
-    <h2>By 9 Months</h2>
-    <p>Most babies are eating some table foods. If there are few or no symptoms, you can try:</p>
-    <ul>
-      <li><strong>Butter</strong> cooked into mashed potatoes (another form of "baked milk")</li>
-      <li>Other foods cooked with milk</li>
-      <li>If tolerated, try <strong>yogurt</strong> in 2 weeks</li>
-      <li>By <strong>12 months</strong>, try liquid whole milk</li>
-    </ul>
+    <h2>What Does My Baby Have?</h2>
+    <p>There is a lot of confusion about milk-related problems in babies. Here is a simple breakdown:</p>
 
     <div class="callout info">
-      <div class="callout-title">📝 Nutrition Note</div>
-      <p>If your baby is taking more than 15 ounces of breast milk or formula daily, switching to that much whole milk alone is not the best nutrition.</p>
+      <div class="callout-title">🍼 Cow's Milk Protein Intolerance (What Your Baby Has)</div>
+      <p>Your baby's immune system is reacting to the <strong>protein</strong> in cow's milk. This can cause blood in the stool, excessive fussiness, or worsened reflux/spitting up. This is a slower, delayed reaction — not the type that causes hives or breathing problems. It is very real, it is very stressful, and the good news is that most babies outgrow this in the first year of life.</p>
     </div>
 
-    <div class="callout important">
-      <div class="callout-title">🚨 When to Call Us</div>
-      <p>Contact our office if your child develops diarrhea, vomiting, rashes, hives, or blood in the stool during reintroduction. <strong>If there is difficulty breathing or swelling of the face or lips, go directly to the Emergency Department.</strong></p>
-      <p>For milder or uncertain reactions, take notes on the foods and reactions, and try those foods again after 2 or 3 other foods.</p>
+    <div class="callout warning">
+      <div class="callout-title">⚠️ This Is Different From...</div>
+      <p><strong>Immediate milk allergy (IgE-mediated):</strong> A different type of immune reaction to milk protein that causes rapid symptoms like hives, swelling, vomiting within minutes, or in rare cases breathing problems. This type is diagnosed with skin or blood allergy tests and typically takes longer to outgrow. If your child has this type, your doctor will give you a different plan.</p>
+      <p><strong>Lactose intolerance:</strong> A completely different condition — this is a problem digesting the <strong>sugar</strong> in milk (not the protein). It is <strong>very rare in babies</strong> and is much more common in older children and adults. <a class="resource-link" href="javascript:void(0)" onclick="showArticle('lactose-intolerance')" style="margin: 0.5rem 0 0; display: inline-flex;">📖 Learn More About Lactose Intolerance</a></p>
     </div>
 
-    <h2>Resources</h2>
-    <a class="resource-link" href="https://gikids.org/digestive-topics/cows-milk-protein-allergy/" target="_blank" rel="noopener">🏥 GIKids (NASPGHAN): Cow's Milk Protein Allergy</a>
-    <br>
-    <a class="resource-link" href="https://kidshealth.org/en/parents/milk-allergy.html" target="_blank" rel="noopener">🏥 Nemours KidsHealth: Milk Allergy in Infants</a>
-    <br>
-    <a class="resource-link" href="https://naspghan.org/bowel-sounds/bowel-sounds-the-pediatric-gi-podcast-13-victoria-martin-cows-milk-protein-intolerance-and-allergic-proctocolitis/" target="_blank" rel="noopener">🎙️ Podcast: CMPI &amp; Allergic Proctocolitis (NASPGHAN)</a>
+    <h2>When Can We Reintroduce Milk?</h2>
+    <p>Most infants with milk protein intolerance will tolerate cow's milk protein back in their diet within the first year. <strong>About 50% will tolerate milk by 6 months</strong> and <strong>95% by 9 months</strong>. The step-by-step plan below helps us safely find out if your baby is ready.</p>
+
+    <h2>How Is Your Baby Fed?</h2>
+    <p>Tap below so we can show you the right information:</p>
+    <div class="feed-toggle">
+      <button class="feed-btn" onclick="toggleFeed('bf', this)" id="btn-bf">
+        <span class="feed-icon">🤱</span>
+        Breastfed
+      </button>
+      <button class="feed-btn" onclick="toggleFeed('ff', this)" id="btn-ff">
+        <span class="feed-icon">🍼</span>
+        Formula-Fed
+      </button>
+    </div>
+
+    <div class="feed-section" id="section-bf">
+      <h2>Reintroduction Through Mom's Diet</h2>
+      <p>If your baby is doing well at 6 months, begin adding foods back to <em>your</em> diet in this order, about 2 weeks apart:</p>
+
+      <div class="step-box">
+        <span class="step-number">1</span>
+        <h4>Baked Soy</h4>
+        <p>Foods where soy is a minor ingredient, baked into the product.</p>
+      </div>
+
+      <div class="step-box">
+        <span class="step-number">2</span>
+        <h4>Baked Milk</h4>
+        <p>Foods like muffins or cake where milk is not a main ingredient (baked in).</p>
+      </div>
+
+      <div class="step-box">
+        <span class="step-number">3</span>
+        <h4>Fermented Milk</h4>
+        <p>Yogurt and cheese added to your diet.</p>
+      </div>
+
+      <div class="step-box">
+        <span class="step-number">4</span>
+        <h4>Liquid Milk</h4>
+        <p>Regular cow's milk added to your diet.</p>
+      </div>
+    </div>
+
+    <div class="feed-section" id="section-ff">
+    </div>
+
+    <div class="feed-section" id="section-shared">
+      <h2>Starting Solid Foods</h2>
+      <ul>
+        <li id="solids-bf-note">Start pureed fruits and vegetables at <strong>4 months</strong> (if supplementing with formula) or <strong>6 months</strong> (if exclusively breastfed).</li>
+        <li>Baby should be sitting up with good head and neck control.</li>
+        <li>Introduce <strong>1 new food per week</strong>, watching for diarrhea, vomiting, rashes, hives, or blood in the stool.</li>
+        <li><strong>Iron-containing foods</strong> like infant cereals are necessary at this age — make sure they are milk- and soy-free.</li>
+        <li>Add <strong>meats after fruits and vegetables</strong>.</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-title">🥜 Allergy Prevention</div>
+        <p>Talk with your pediatrician at the 6-month visit about introducing <strong>peanut powder</strong> and <strong>egg protein</strong>, which may lower the risk of later food allergy to these foods.</p>
+      </div>
+
+      <h2>By 9 Months</h2>
+      <p>Most babies are eating some table foods. If there are few or no symptoms, you can try:</p>
+      <ul>
+        <li><strong>Butter</strong> cooked into mashed potatoes</li>
+        <li><strong>Bread products</strong> made with milk, like a muffin</li>
+        <li>Other foods cooked with milk</li>
+        <li>If tolerated, try <strong>yogurt</strong> in 2 weeks</li>
+        <li>If that is tolerated, then add <strong>cheese</strong></li>
+        <li>By <strong>12 months</strong>, try liquid whole milk</li>
+      </ul>
+
+      <div class="callout info">
+        <div class="callout-title">📝 Nutrition Note</div>
+        <p>If your baby is taking more than 15 ounces of breast milk or formula daily, switching to that much whole milk alone is not the best nutrition.</p>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">🔬 About Allergy Testing</div>
+        <p>Younger babies are less likely to have positive skin prick tests or blood tests for allergy, so we usually avoid testing unless there are immediate or repeated reactions.</p>
+      </div>
+
+      <div class="callout important">
+        <div class="callout-title">🚨 When to Call Us</div>
+        <p>Contact our office if your child develops diarrhea, vomiting, rashes, hives, or blood in the stool during reintroduction. <strong>If there is difficulty breathing or swelling of the face or lips, go directly to the Emergency Department.</strong></p>
+        <p>For milder or uncertain reactions, take notes on the foods and reactions, and try those foods again after 2 or 3 other foods. If symptoms persist, we would consider further evaluation such as an Allergy referral.</p>
+      </div>
+
+      <h2>Resources</h2>
+      <a class="resource-link" href="https://gikids.org/digestive-topics/cows-milk-protein-allergy/" target="_blank" rel="noopener">🏥 GIKids (NASPGHAN): Cow's Milk Protein Allergy</a>
+      <br>
+      <a class="resource-link" href="https://kidshealth.org/en/parents/milk-allergy.html" target="_blank" rel="noopener">🏥 Nemours KidsHealth: Milk Allergy in Infants</a>
+      <br>
+      <a class="resource-link" href="https://naspghan.org/bowel-sounds/bowel-sounds-the-pediatric-gi-podcast-13-victoria-martin-cows-milk-protein-intolerance-and-allergic-proctocolitis/" target="_blank" rel="noopener">🎙️ Podcast: CMPI &amp; Allergic Proctocolitis (NASPGHAN)</a>
+    </div>
   `
 },
-
-"cmpa-formula": {
-  icon: "🧀",
-  title: "Milk Protein Reintroduction",
-  subtitle: "Guide for Formula-Fed Infants",
-  color: "blue",
-  html: `
-    <p>About <strong>half of babies will tolerate cow's milk protein by 6 months</strong> (through mother's milk first) and <strong>95% will tolerate it by 9 months</strong>.</p>
-
-    <h2>Starting Solid Foods</h2>
-    <ul>
-      <li>Stage I pureed, single-ingredient jar foods can start at <strong>4–6 months</strong>.</li>
-      <li>Introduce <strong>1 new food each week</strong> — most reactions happen within 6 days.</li>
-      <li><strong>Iron-containing foods</strong> like infant cereals are necessary at this age — make sure they are milk- and soy-free.</li>
-    </ul>
-
-    <div class="callout tip">
-      <div class="callout-title">🥜 Allergy Prevention</div>
-      <p>Talk with your pediatrician at the 6-month visit about introducing <strong>peanut powder</strong> and <strong>egg protein</strong>, which may lower the risk of later food allergy to these foods.</p>
-    </div>
-
-    <h2>Reintroduction Timeline</h2>
-
-    <div class="step-box">
-      <span class="step-number">1</span>
-      <h4>~9 Months: Butter</h4>
-      <p>When baby is eating mashed table foods with no further reactions, try butter cooked into mashed potatoes — a form of "cooked milk."</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">2</span>
-      <h4>2–4 Weeks Later: Yogurt</h4>
-      <p>Once cooked milk is tolerated, introduce yogurt.</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">3</span>
-      <h4>Then: Cheese</h4>
-      <p>Add cheese after yogurt is tolerated.</p>
-    </div>
-
-    <div class="step-box">
-      <span class="step-number">4</span>
-      <h4>11–12 Months: Whole Milk</h4>
-      <p>Most infants will tolerate whole milk by this age. Once baby is taking less than about 15 oz of formula, whole milk can become the main dairy source.</p>
-    </div>
-
-    <div class="callout info">
-      <div class="callout-title">🔬 About Allergy Testing</div>
-      <p>Younger babies are less likely to have positive skin prick tests or blood tests for allergy, so we usually avoid testing unless there are immediate or repeated reactions.</p>
-    </div>
-
-    <div class="callout important">
-      <div class="callout-title">🚨 What to Watch For</div>
-      <p>Look for <strong>eczema or hives, diarrhea (with or without blood), vomiting, feeding refusal, or increased fussiness</strong> with new foods and with reintroduction of cow's milk. If these occur, we would consider further evaluation such as an Allergy referral.</p>
-    </div>
-
-    <h2>Resources</h2>
-    <a class="resource-link" href="https://gikids.org/digestive-topics/cows-milk-protein-allergy/" target="_blank" rel="noopener">🏥 GIKids (NASPGHAN): Cow's Milk Protein Allergy</a>
-    <br>
-    <a class="resource-link" href="https://kidshealth.org/en/parents/milk-allergy.html" target="_blank" rel="noopener">🏥 Nemours KidsHealth: Milk Allergy in Infants</a>
-    <br>
-    <a class="resource-link" href="https://naspghan.org/bowel-sounds/bowel-sounds-the-pediatric-gi-podcast-13-victoria-martin-cows-milk-protein-intolerance-and-allergic-proctocolitis/" target="_blank" rel="noopener">🎙️ Podcast: CMPI &amp; Allergic Proctocolitis (NASPGHAN)</a>
-  `
-}
 
 };
 
@@ -1208,6 +1288,83 @@ articles['cleanout-over12'] = {
   `
 };
 
+articles['lactose-intolerance'] = {
+  icon: "🥛",
+  title: "Lactose Intolerance",
+  subtitle: "Understanding Lactose Intolerance in Children",
+  color: "peach",
+  html: `
+    <h2>What Is Lactose Intolerance?</h2>
+    <p>Lactose intolerance is a problem digesting <strong>lactose</strong>, a type of <strong>sugar</strong> found in milk and dairy products. It happens when the body doesn't make enough of an enzyme called <strong>lactase</strong>, which is needed to break down lactose.</p>
+    <p>When lactose isn't broken down properly, it passes into the large intestine where bacteria ferment it, causing gas, bloating, stomach cramps, and diarrhea — usually within 30 minutes to 2 hours after eating dairy.</p>
+
+    <div class="callout important">
+      <div class="callout-title">🔑 The Key Difference</div>
+      <p>Lactose intolerance is a problem with the <strong>sugar</strong> in milk. Milk protein intolerance is a problem with the <strong>protein</strong> in milk. They are completely different conditions with different causes and treatments.</p>
+    </div>
+
+    <h2>Is Lactose Intolerance Common in Babies?</h2>
+    <p><strong>No.</strong> Lactose intolerance is very rare in babies and young children. Almost all babies are born making plenty of lactase — they need it to digest breast milk and formula. The body naturally starts making less lactase as children get older, which is why lactose intolerance usually doesn't appear until <strong>age 3 or older</strong> and becomes more common in teens and adults.</p>
+
+    <div class="callout info">
+      <div class="callout-title">📝 A Few Exceptions</div>
+      <p><strong>Temporary lactose intolerance</strong> can happen after a stomach bug or intestinal infection. This usually resolves within a few days to weeks.</p>
+      <p><strong>Premature babies</strong> may temporarily have lower lactase levels, but this usually improves quickly.</p>
+      <p><strong>Congenital lactase deficiency</strong> (being born unable to make lactase) is extremely rare.</p>
+    </div>
+
+    <h2>Who Gets Lactose Intolerance?</h2>
+    <p>Lactose intolerance is more common in certain backgrounds, including people of African American, Hispanic, Asian American, and Native American heritage. It is less common in people of Northern European descent.</p>
+
+    <h2>What Are the Symptoms?</h2>
+    <p>Symptoms usually appear 30 minutes to 2 hours after consuming dairy and may include:</p>
+    <ul>
+      <li>Gas and bloating</li>
+      <li>Stomach cramps or belly pain</li>
+      <li>Diarrhea</li>
+      <li>Nausea</li>
+    </ul>
+    <p>Symptoms depend on how much dairy was consumed and how much lactase your child's body makes. Some children can handle small amounts of dairy without problems.</p>
+
+    <h2>How Is It Diagnosed?</h2>
+    <p>The most practical way to diagnose lactose intolerance is an <strong>elimination challenge</strong> — your doctor will have your child avoid dairy for a period of time to see if symptoms improve, then reintroduce it to see if symptoms return.</p>
+    <p>In some cases, if your child is already having an <strong>endoscopy</strong> (a procedure where the doctor looks inside the intestines with a small camera), a tissue sample can be taken to directly measure lactase and other digestive enzymes (called <strong>disaccharidases</strong>). This gives a definitive answer.</p>
+
+    <h2>How Is It Managed?</h2>
+    <ul>
+      <li><strong>Limit dairy</strong> — most children don't have to avoid all dairy, just reduce the amount</li>
+      <li><strong>Eat dairy with other foods</strong> — this slows digestion and can reduce symptoms</li>
+      <li><strong>Try yogurt and cheese</strong> — these are often easier to digest than milk</li>
+      <li><strong>Lactase enzyme supplements</strong> — taken before eating dairy, these can help break down lactose</li>
+      <li><strong>Calcium and Vitamin D</strong> — if your child avoids dairy, make sure they get enough from other sources (leafy greens, fortified juices, beans)</li>
+    </ul>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Good to Know</div>
+      <p>Lactose intolerance is not dangerous — it causes discomfort but does not damage the intestines. Many health care providers consider it a normal variation, not a disease. The goal is finding the right amount of dairy your child can comfortably handle.</p>
+    </div>
+
+    <h2>Resources</h2>
+    <a class="resource-link" href="https://www.healthychildren.org/English/healthy-living/nutrition/Pages/Lactose-Intolerance-in-Children.aspx" target="_blank" rel="noopener">🏥 AAP: Lactose Intolerance in Children (HealthyChildren.org)</a>
+    <br>
+    <a class="resource-link" href="https://kidshealth.org/en/parents/lactose.html" target="_blank" rel="noopener">🏥 Nemours KidsHealth: Lactose Intolerance</a>
+  `
+};
+
+function filterCards(category, btn) {
+  var cards = document.querySelectorAll('.card');
+  var tabs = document.querySelectorAll('.category-tab');
+  tabs.forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  cards.forEach(function(card) {
+    if (category === 'all' || card.getAttribute('data-category') === category) {
+      card.classList.remove('hidden-card');
+    } else {
+      card.classList.add('hidden-card');
+    }
+  });
+}
+
 function showArticle(key) {
   const a = articles[key];
   if (!a) return;
@@ -1225,6 +1382,31 @@ function showArticle(key) {
   try { history.replaceState(null, '', '#' + key); } catch(e) {}
 }
 
+function toggleFeed(type, btn) {
+  var bf = document.getElementById('section-bf');
+  var ff = document.getElementById('section-ff');
+  var shared = document.getElementById('section-shared');
+  var btnBf = document.getElementById('btn-bf');
+  var btnFf = document.getElementById('btn-ff');
+  if (!bf || !shared) return;
+
+  // Reset buttons
+  btnBf.className = 'feed-btn';
+  btnFf.className = 'feed-btn';
+
+  if (type === 'bf') {
+    btnBf.classList.add('active-bf');
+    bf.classList.add('visible');
+    ff.classList.remove('visible');
+    shared.classList.add('visible');
+  } else {
+    btnFf.classList.add('active-ff');
+    bf.classList.remove('visible');
+    ff.classList.add('visible');
+    shared.classList.add('visible');
+  }
+}
+
 function showHome() {
   document.body.classList.remove('article-open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1232,9 +1414,12 @@ function showHome() {
 }
 
 // Deep link support: open article if URL has a hash
+// Also support old hashes for backwards compatibility
 window.addEventListener('DOMContentLoaded', () => {
   try {
-    const hash = window.location.hash.replace('#', '');
+    var hash = window.location.hash.replace('#', '');
+    if (hash === 'cmpa-breastfed') { hash = 'cmpa'; }
+    if (hash === 'cmpa-formula') { hash = 'cmpa'; }
     if (hash && articles[hash]) {
       showArticle(hash);
     }
